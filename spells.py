@@ -28,7 +28,7 @@ i=0
 for t in tr_elements[0]:
     i+=1
     name=t.text_content()
-    print('%d:"%s"'%(i,name))
+    #print('%d:"%s"'%(i,name))
     col.append((name,[]))
 
 #Since the first row is the header, data is stored on the second row onwards
@@ -60,7 +60,8 @@ for j in range(1,len(tr_elements)):
 #print([len(C) for (title,C) in col])
 Dict={title:column for (title,column) in col}
 df=pd.DataFrame(Dict)
-#print(df.head())
+#Create spell list from Incantation column
+spelllist = df['Incantation'].tolist()
 
 #----------------------------------------------------------------------
 #Create variables for the books by iterating through list of URLS
@@ -91,4 +92,6 @@ for i in URLS:
 #----------------------------------------------------------------------
 
 spell = input("Which spell would you like to count?", )
-print()
+if spell not in spelllist:
+    print("Invalid Spell")
+

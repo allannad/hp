@@ -1,4 +1,4 @@
-# hp
+# Harry Potter project
 **Harry Potter Spell Usage**
 
 #Set up virtual environment in command line

@@ -7,7 +7,7 @@ import lxml.html as lh
 import pandas as pd
 
 #----------------------------------------------------------------------
-#parse through website to find all spells
+#PARSE THROUGH WEBSITE TO FIND LIST OF SPELLS
 #credit: https://towardsdatascience.com/web-scraping-html-tables-with-python-c9baba21059
 #----------------------------------------------------------------------
 
@@ -64,7 +64,7 @@ df=pd.DataFrame(Dict)
 spelllist = df['Incantation'].tolist()
 
 #----------------------------------------------------------------------
-#Create variables for the books by iterating through list of URLS
+#CREATE VARIABLES FOR THE BOOKS BY ITERATING THROUGH LIST OF BOOK URLs
 #----------------------------------------------------------------------
 
 URLS = [
@@ -78,6 +78,7 @@ URLS = [
 ]
 
 booklist = []
+
 for i in URLS:
     f = urllib.request.urlopen(i)
     book = f.read()
@@ -85,7 +86,16 @@ for i in URLS:
     booklist.append(book)
     #print(type(book))
 
-#print(booklist[0])
+#create list of book titles
+booktitles = [
+    "Harry Potter and the Sorcerer's Stone",
+    "Harry Potter and the Chamber of Secrets",
+    "Harry Potter and the Prisoner of Azkaban",
+    "Harry Potter and the Goblet of Fire",
+    "Harry Potter and the Order of the Phoenix",
+    "Harry Potter and the Half Blood Prince",
+    "Harry Potter and the Deathly Hallows"
+]
 
 #----------------------------------------------------------------------
 #PICK SPELL TO VISUALIZE 
@@ -95,3 +105,18 @@ spell = input("Which spell would you like to count?", )
 if spell not in spelllist:
     print("Invalid Spell")
 
+#sum number of times spell was used in each book
+incantations = []
+for i in booklist:
+    count = i.count(spell)
+    incantations.append(count)
+print(incantations)
+
+#combine book title with spell count
+spelllist = {} 
+for key in booktitles: 
+    for value in incantations: 
+        spelllist[key] = value 
+        incantations.remove(value) 
+        break 
+print(spelllist)

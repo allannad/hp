@@ -1,0 +1,3 @@
+pandas
+urllib.request #pip install
+potter_spells #pip install

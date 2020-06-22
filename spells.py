@@ -5,9 +5,12 @@ from bs4 import BeautifulSoup # note that the import package command is `bs4`
 import requests
 import lxml.html as lh
 import pandas as pd
-
+import plotly.graph_objects as go
+import matplotlib as plot
+import matplotlib.pyplot as plt
+import matplotlib.ticker as ticker
 #----------------------------------------------------------------------
-#PARSE THROUGH WEBSITE TO FIND LIST OF SPELLS
+#PARSE THROUGH WEBSITE TO CREATE LIST OF SPELLS
 #credit: https://towardsdatascience.com/web-scraping-html-tables-with-python-c9baba21059
 #----------------------------------------------------------------------
 
@@ -35,14 +38,11 @@ for t in tr_elements[0]:
 for j in range(1,len(tr_elements)):
     #T is our j'th row
     T=tr_elements[j]
-    
     #If row is not of size 3, the //tr data is not from our table 
     if len(T)!=3:
         break
-    
     #i is the index of our column
     i=0
-    
     #Iterate through each element of the row
     for t in T.iterchildren():
         data=t.text_content() 
@@ -101,7 +101,7 @@ booktitles = [
 #PICK SPELL TO VISUALIZE 
 #----------------------------------------------------------------------
 
-spell = input("Which spell would you like to count?", )
+spell = input("Which spell would you like to visualize?", )
 if spell not in spelllist:
     print("Invalid Spell")
 
@@ -120,3 +120,12 @@ for key in booktitles:
         incantations.remove(value) 
         break 
 print(spelllist)
+
+#----------------------------------------------------------------------
+#VISUALIZE THE SPELL
+#----------------------------------------------------------------------
+
+plt.bar(range(len(spelllist)), spelllist.values(), align='center')
+plt.xticks(range(len(spelllist)), list(spelllist.keys()))
+
+plt.show()

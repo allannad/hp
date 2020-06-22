@@ -88,13 +88,13 @@ for i in URLS:
 
 #create list of book titles
 booktitles = [
-    "Harry Potter and the Sorcerer's Stone",
-    "Harry Potter and the Chamber of Secrets",
-    "Harry Potter and the Prisoner of Azkaban",
-    "Harry Potter and the Goblet of Fire",
-    "Harry Potter and the Order of the Phoenix",
-    "Harry Potter and the Half Blood Prince",
-    "Harry Potter and the Deathly Hallows"
+    "Sorcerer's Stone",
+    "Chamber of Secrets",
+    "Prisoner of Azkaban",
+    "Goblet of Fire",
+    "Order of the Phoenix",
+    "Half Blood Prince",
+    "Deathly Hallows"
 ]
 
 #----------------------------------------------------------------------
@@ -105,7 +105,7 @@ spell = input("Which spell would you like to visualize?", )
 if spell not in spelllist:
     print("Invalid Spell")
 
-#sum number of times spell was used in each book
+#sum number of times spell was mentioned in each book
 incantations = []
 for i in booklist:
     count = i.count(spell)
@@ -125,7 +125,22 @@ print(spelllist)
 #VISUALIZE THE SPELL
 #----------------------------------------------------------------------
 
+#WORKS:
 plt.bar(range(len(spelllist)), spelllist.values(), align='center')
 plt.xticks(range(len(spelllist)), list(spelllist.keys()))
-
+plt.xlabel('Book', fontsize=15)
+plt.ylabel('Count of Mentions', fontsize=15)
+plt.title("Mentions of '"+spell+"' in Each Harry Potter Book",fontsize=18)
 plt.show()
+
+#DOESN'T WORK
+#fig, ax = plt.subplots()
+#img = plt.imread("https://www.pngkit.com/png/full/140-1407000_harry-potter-logo-png-file-harry-potter-logo.png")
+#ax.imshow(img)#, extent=[0, 400, 0, 300])
+
+#
+#fig = plt.figure()
+#plt.plot(data)
+#fig.suptitle('test title', fontsize=20)
+#
+#fig.savefig('test.jpg')

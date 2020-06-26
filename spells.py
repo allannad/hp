@@ -4,7 +4,7 @@ import requests
 import lxml.html as lh
 import pandas as pd
 import matplotlib.pyplot as plt
-import regex as re
+import re
 #----------------------------------------------------------------------
 #PARSE THROUGH WEBSITE TO CREATE LIST OF SPELLS
 #credit: https://towardsdatascience.com/web-scraping-html-tables-with-python-c9baba21059
@@ -55,17 +55,27 @@ Dict={title:column for (title,column) in col}
 df=pd.DataFrame(Dict)
 #Create cleaned up spell list from Incantation column
 spelllist = df['Incantation'].tolist()
-print(spelllist)
 finallist = [x for x in spelllist if x != '—']
 finallist = [x for x in finallist if x != '\xa0—']
-print(finallist)
-p=re.compile(finallist)
-r= p.findall("\xa0$")
-print(r)
-#TODO
-#REMOVE \xa0- from end of spells
-
-
+finallist.pop(0)
+x=finallist[0]
+stringlist= []
+for x in finallist:
+    y= str(x)
+    stringlist.append(y)
+#Clean up spell list:
+#create list that does not match the regex
+r = re.compile('.*\\xa0$')
+matchespattern = list(filter(r.match, stringlist))
+#create list that does not match the regex
+notmatchpattern = [i for i in stringlist if not r.match(i)]
+#remove \xa0- from end of matchespattern list
+cleanmatches = []
+for i in matchespattern:
+    st = i[:-1]
+    cleanmatches.append(st)
+#combine two lists: cleanmatches and notmatchpattern:
+stringlist = cleanmatches + notmatchpattern
 
 #----------------------------------------------------------------------
 #CREATE VARIABLES FOR THE BOOKS BY ITERATING THROUGH LIST OF BOOK URLs & BOOK TITLES
@@ -106,7 +116,7 @@ booktitles = [
 #----------------------------------------------------------------------
 
 spell = input("Which spell would you like to visualize?", ).title()
-if spell not in spelllist:
+if spell not in stringlist:
     print("Invalid Spell, please try again.")
 
 #sum number of times spell was mentioned in each book
@@ -114,7 +124,7 @@ incantations = []
 for i in booklist:
     count = i.count(spell)
     incantations.append(count)
-print(incantations)
+#print(incantations)
 
 #combine book title with spell count
 spelllist = {} 
@@ -123,7 +133,7 @@ for key in booktitles:
         spelllist[key] = value 
         incantations.remove(value) 
         break 
-print(spelllist)
+#print(spelllist)
 
 #----------------------------------------------------------------------
 #VISUALIZE THE SPELL

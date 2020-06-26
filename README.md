@@ -3,7 +3,7 @@
 
 This command line program takes a user input of a spell, jinx, charm or curse. It creates a graph of the times the input has been mentioned across each Harry Potter book.
 
-The text of each book is read from [this website](http://www.glozman.com/textpages.html), as is the [list of incantations](https://www.pojo.com/harry-potter-spell-list/).
+The text of each book is read from [this website](http://www.glozman.com/textpages.html), and the list of incantations [was found here](https://www.pojo.com/harry-potter-spell-list/).
 
 Set up virtual environment in command line:
 1. `conda create -n hp-env python=3.7`

@@ -1,5 +1,6 @@
 pandas
 urllib.request #pip install
-potter_spells #pip install
-beautifulsoup4 #pip install
-plotly.graph_objects
+requests
+lxml.html
+matplotlib.pyplot 
+regex #pip install

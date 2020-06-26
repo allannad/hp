@@ -1,14 +1,10 @@
 #Load up the text of the books
 import urllib.request
 import requests
-from bs4 import BeautifulSoup # note that the import package command is `bs4`
-import requests
 import lxml.html as lh
 import pandas as pd
-import plotly.graph_objects as go
-import matplotlib as plot
 import matplotlib.pyplot as plt
-import matplotlib.ticker as ticker
+import regex as re
 #----------------------------------------------------------------------
 #PARSE THROUGH WEBSITE TO CREATE LIST OF SPELLS
 #credit: https://towardsdatascience.com/web-scraping-html-tables-with-python-c9baba21059
@@ -21,8 +17,6 @@ page = requests.get(url)
 doc = lh.fromstring(page.content)
 #Parse data that are stored between <tr>..</tr> of HTML
 tr_elements = doc.xpath('//tr')
-#print([len(T) for T in tr_elements[:12]])
-
 tr_elements = doc.xpath('//tr')
 #Create empty list
 col=[]
@@ -41,7 +35,7 @@ for j in range(1,len(tr_elements)):
     #If row is not of size 3, the //tr data is not from our table 
     if len(T)!=3:
         break
-    #i is the index of our column
+    #i is the index of the column
     i=0
     #Iterate through each element of the row
     for t in T.iterchildren():
@@ -57,14 +51,24 @@ for j in range(1,len(tr_elements)):
         col[i][1].append(data)
         #Increment i for the next column
         i+=1
-#print([len(C) for (title,C) in col])
 Dict={title:column for (title,column) in col}
 df=pd.DataFrame(Dict)
-#Create spell list from Incantation column
+#Create cleaned up spell list from Incantation column
 spelllist = df['Incantation'].tolist()
+print(spelllist)
+finallist = [x for x in spelllist if x != '—']
+finallist = [x for x in finallist if x != '\xa0—']
+print(finallist)
+p=re.compile(finallist)
+r= p.findall("\xa0$")
+print(r)
+#TODO
+#REMOVE \xa0- from end of spells
+
+
 
 #----------------------------------------------------------------------
-#CREATE VARIABLES FOR THE BOOKS BY ITERATING THROUGH LIST OF BOOK URLs
+#CREATE VARIABLES FOR THE BOOKS BY ITERATING THROUGH LIST OF BOOK URLs & BOOK TITLES
 #----------------------------------------------------------------------
 
 URLS = [
@@ -101,9 +105,9 @@ booktitles = [
 #PICK SPELL TO VISUALIZE 
 #----------------------------------------------------------------------
 
-spell = input("Which spell would you like to visualize?", )
+spell = input("Which spell would you like to visualize?", ).title()
 if spell not in spelllist:
-    print("Invalid Spell")
+    print("Invalid Spell, please try again.")
 
 #sum number of times spell was mentioned in each book
 incantations = []
@@ -125,7 +129,7 @@ print(spelllist)
 #VISUALIZE THE SPELL
 #----------------------------------------------------------------------
 
-#WORKS:
+#Create graph
 plt.bar(range(len(spelllist)), spelllist.values(), align='center')
 plt.xticks(range(len(spelllist)), list(spelllist.keys()))
 plt.xlabel('Book', fontsize=15)
@@ -133,14 +137,3 @@ plt.ylabel('Count of Mentions', fontsize=15)
 plt.title("Mentions of '"+spell+"' in Each Harry Potter Book",fontsize=18)
 plt.show()
 
-#DOESN'T WORK
-#fig, ax = plt.subplots()
-#img = plt.imread("https://www.pngkit.com/png/full/140-1407000_harry-potter-logo-png-file-harry-potter-logo.png")
-#ax.imshow(img)#, extent=[0, 400, 0, 300])
-
-#
-#fig = plt.figure()
-#plt.plot(data)
-#fig.suptitle('test title', fontsize=20)
-#
-#fig.savefig('test.jpg')

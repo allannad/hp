@@ -5,6 +5,7 @@ import lxml.html as lh
 import pandas as pd
 import matplotlib.pyplot as plt
 import re
+import sys
 #----------------------------------------------------------------------
 #PARSE THROUGH WEBSITE TO CREATE LIST OF SPELLS
 #credit: https://towardsdatascience.com/web-scraping-html-tables-with-python-c9baba21059
@@ -117,8 +118,8 @@ booktitles = [
 
 spell = input("Which spell would you like to visualize?", ).title()
 if spell not in stringlist:
-    print("Invalid Spell, please try again.")
-
+    sys.exit("Invalid Spell, please try again.")
+    
 #sum number of times spell was mentioned in each book
 incantations = []
 for i in booklist:
